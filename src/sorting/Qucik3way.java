@@ -1,29 +1,35 @@
 package sorting;
 
-import algs4.*;
+import algs4.StdIn;
+import algs4.StdOut;
 
-/*
- * —°‘Ò≈≈–Ú
- */
-public class Selection 
+public class Qucik3way 
 {
-	public static void sort(Comparable[] a) 
+	private static void sort(Comparable[] a)
 	{
-		int N = a.length;
-		for (int i = 0; i < N; i++) 
-		{
-			int min = i;
-			for (int j = i + 1; j < N; j++) 
-			{
-				if (less(a[j], a[min])) 
-				{
-					min = j;
-				}
-			}
-			exch(a, i, min);
-		}
+		sort(a, 0, a.length-1);
 	}
-
+	private static void sort(Comparable[] a, int lo, int hi)
+	{
+		if(hi <= lo)
+			return;
+		int lt = lo, i = lo + 1, gt = hi;
+		Comparable v = a[lo];
+		while(i <= gt)
+		{
+			int cmp = a[i].compareTo(v);
+			if(cmp < 0)
+				exch(a, lt++, i++);
+			else if(cmp > 0)
+				exch(a, i, gt--);
+			else 
+				i++;								
+		}
+		sort(a, lo, lt-1);
+		sort(a, gt+1, hi);
+		
+	}
+	
 	private static boolean less(Comparable v, Comparable w) 
 	{
 		return v.compareTo(w) < 0;

@@ -1,29 +1,48 @@
 package sorting;
 
-import algs4.*;
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
 
-/*
- * —°‘Ò≈≈–Ú
- */
-public class Selection 
+import algs4.StdIn;
+import algs4.StdOut;
+
+public class Quick 
 {
-	public static void sort(Comparable[] a) 
+	public static int partition(Comparable[] a, int lo, int hi)
 	{
-		int N = a.length;
-		for (int i = 0; i < N; i++) 
+		int i = lo, j = hi+1;
+		Comparable v = a[lo];
+		while(true)
 		{
-			int min = i;
-			for (int j = i + 1; j < N; j++) 
-			{
-				if (less(a[j], a[min])) 
-				{
-					min = j;
-				}
-			}
-			exch(a, i, min);
+			while(less(a[++i], v))
+				if(i == hi)
+					break;
+			while(less(v, a[--j]))
+				if(j == lo)
+					break;
+			if(i >= j)
+				break;
+			exch(a, i, j);
 		}
+		exch(a, lo, j);
+		return j;		
 	}
 
+	public static void sort(Comparable[] a)
+	{
+		sort(a, 0, a.length-1);
+	}
+	
+	public static void sort(Comparable[] a, int lo, int hi)
+	{
+		if(hi <= lo)
+			return;
+		int j = partition(a, lo, hi);
+		sort(a, lo, j-1);
+		sort(a, j+1, hi);		
+	}
+	
+	
+	
 	private static boolean less(Comparable v, Comparable w) 
 	{
 		return v.compareTo(w) < 0;
@@ -62,4 +81,5 @@ public class Selection
 		assert isSorted(a);
 		show(a);
 	}
+
 }
